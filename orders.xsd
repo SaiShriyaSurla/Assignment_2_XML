@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Schema documentation and metadata -->
+<!--
+   New Perspectives on XML
+   Tutorial 3
+   Case Problem 4
+
+   "Map Finds For You" schema
+   Author:  Sai Shriya Surla
+   Date:   11 March 2024  
+
+   Filename:         orders.xsd
+   Supporting Files: orders.xml
+-->
+
+<!-- Starting the schema definition with the XML Schema namespace -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Definition of the root element 'customers' -->
+  <xs:element name="customers">
+    <!-- Defining 'customers' as a complex type, allowing nested elements -->
+    <xs:complexType>
+      <!-- Ensuring 'customer' elements appear in a sequence within 'customers' -->
+      <xs:sequence>
+        <!-- Definition of 'customer' elements, allowed multiple times -->
+        <xs:element name="customer" maxOccurs="unbounded">
+          <!-- Each 'customer' is a complex type with its own nested structure -->
+          <xs:complexType>
+            <!-- Sequence of elements within each 'customer' -->
+            <xs:sequence>
+              <!-- 'name' element definition, with an additional 'title' attribute -->
+              <xs:element name="name">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <!-- Extending the base type to add an attribute to 'name' -->
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="title" type="xs:string"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <!-- Simple elements within 'customer' with string data types -->
+              <xs:element name="address" type="xs:string"/>
+              <xs:element name="phone" type="xs:string"/>
+              <xs:element name="email" type="xs:string"/>
+              <!-- 'orders' nested within 'customer', containing 'order' elements -->
+              <xs:element name="orders">
+                <xs:complexType>
+                  <xs:sequence>
+                    <!-- 'order' elements, allowed multiple times within 'orders' -->
+                    <xs:element name="order" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <!-- Date of the order -->
+                          <xs:element name="orderDate" type="xs:date"/>
+                          <!-- 'items' nested within 'order' -->
+                          <xs:element name="items">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <!-- 'item' elements within 'items', allowed multiple times -->
+                                <xs:element name="item" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <!-- 'itemPrice' with an attribute to indicate if it's a sale item -->
+                                      <xs:element name="itemPrice">
+                                        <xs:complexType>
+                                          <xs:simpleContent>
+                                            <xs:extension base="xs:decimal">
+                                              <xs:attribute name="saleItem" type="xs:string"/>
+                                            </xs:extension>
+                                          </xs:simpleContent>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <!-- Quantity of the item ordered -->
+                                      <xs:element name="itemQty" type="xs:integer"/>
+                                    </xs:sequence>
+                                    <!-- Required 'itemNumber' attribute for each 'item' -->
+                                    <xs:attribute name="itemNumber" type="xs:string" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <!-- Required attributes for 'order' to identify it and its associated customer -->
+                        <xs:attribute name="orderID" type="xs:string" use="required"/>
+                        <xs:attribute name="orderBy" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <!-- Required 'custID' attribute for each 'customer' -->
+            <xs:attribute name="custID" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
